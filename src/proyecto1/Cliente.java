@@ -48,7 +48,6 @@ private String Letra;
        
        switch (Opcion){
         case 1:{
-        Numero=Numero+1;
         Letra="A";
         String Ticket1 = Integer.toString(Numero);
         String Ticket2 = Ticket1+Letra;
@@ -56,47 +55,41 @@ private String Letra;
         break;
     } 
         case 2:{
-        Numero=Numero+1;
         Letra="B";
         String Ticket1 = Integer.toString(Numero);
          String Ticket2 = Ticket1+Letra;
         System.out.println("Su numero de Tikete es ="+Ticket2);
         break;
     } 
-           case 4:{
-        Numero=Numero+1;
+           case 3:{
         Letra="C";
         String Ticket1 = Integer.toString(Numero);
          String Ticket2 = Ticket1+Letra;
         System.out.println("Su numero de Tikete es ="+Ticket2);
         break;        
     } 
-              case 5:{
-        Numero=Numero+1;
+              case 4:{
         Letra="D";
         String Ticket1 = Integer.toString(Numero);
          String Ticket2 = Ticket1+Letra;
         System.out.println("Su numero de Tikete es ="+Ticket2);
         break;
     } 
-            case 6:{
-        Numero=Numero+1;
+            case 5:{
         Letra="E";
         String Ticket1 = Integer.toString(Numero);
          String Ticket2 = Ticket1+Letra;
         System.out.println("Su numero de Tikete es ="+Ticket2);
         break;
     }
-        case 7:{
-        Numero=Numero+1;
+        case 6:{
         Letra="F";
         String Ticket1 = Integer.toString(Numero);
          String Ticket2 = Ticket1+Letra;
         System.out.println("Su numero de Tikete es ="+Ticket2);
         break;
     }     
-        case 8:{
-        Numero=Numero+1;
+        case 7:{
         Letra="G";
         String Ticket1 = Integer.toString(Numero);
          String Ticket2 = Ticket1+Letra;
