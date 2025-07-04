@@ -19,7 +19,9 @@ public class Proyecto1 {
         System.out.println("7= hombre");
         int Opcion = Sc.nextInt();
         Cliente Prioridad = new Cliente (Opcion,NumeroTicket,Letra);
+        NumeroTicket=NumeroTicket++;
         Prioridad.Prioridad();
+
     }    
     }
     }

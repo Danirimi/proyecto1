@@ -22,6 +22,7 @@ private String Letra;
     }
     
 //Get-Set Numero
+
     public int getNumero() {
         return Numero;
     }
@@ -29,6 +30,8 @@ private String Letra;
     public void setNumero(int Numero) {
         this.Numero = Numero;
     }
+  
+    
 //Get-Set Letra
 
     public String getLetra() {
@@ -42,9 +45,10 @@ private String Letra;
     
 //Metodo Tickete-Prioridad
    public void Prioridad(){
-       Numero=Numero++;
+       
        switch (Opcion){
         case 1:{
+        Numero=Numero+1;
         Letra="A";
         String Ticket1 = Integer.toString(Numero);
         String Ticket2 = Ticket1+Letra;
