@@ -18,7 +18,7 @@ public class Nodo {
     public Nodo(String dato) {
         this.dato = dato;
         this.siguiente = null;
-        this.prioridad = Cprioridad(dato.charAt(dato.length() - 1));
+        this.prioridad = Cprioridad(dato.charAt(0));
         this.tolerancia = (int)(Math.random() * 146 + 5); 
     }
     private int Cprioridad(char letra){ // metodo para calcular la prioridad de las letras

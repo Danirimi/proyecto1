@@ -10,7 +10,6 @@ package proyecto1;
  * @author danir
  */
 import java.util.ArrayList;
-import proyecto1.Nodo;
 public class Fila {
     public Nodo inicio = null; // esta variable representa el inicio de la fila
     private Nodo fin = null;// esta variable representa el final de la fila
@@ -53,8 +52,8 @@ public class Fila {
     
     
     //Metodo Agregar
-    public void agregar(String dato){
-            Nodo nuevo = new Nodo(dato);
+    public void agregar(Nodo nuevo){
+            
             
             if (inicio == null) {
             inicio = fin = nuevo;
