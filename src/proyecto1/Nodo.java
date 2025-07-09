@@ -21,7 +21,7 @@ public class Nodo {
         this.prioridad = Cprioridad(dato.charAt(0));
         this.tolerancia = (int)(Math.random() * 146 + 5); 
     }
-    private int Cprioridad(char letra){ // metodo para calcular la prioridad de las letras
+    public int Cprioridad(char letra){ // metodo para calcular la prioridad de las letras
         return switch (letra) {
             case 'A' -> 1;
             case 'B' -> 2;

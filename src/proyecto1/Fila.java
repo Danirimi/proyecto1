@@ -142,6 +142,24 @@ public class Fila {
     // Si no se encontró el dato en la fila
     return false;
 }
+     public boolean editarPorDato(String datoOriginal, String nuevoDato) {
+    Nodo actual = inicio;
+
+    while (actual != null) {
+        if (actual.dato.equals(datoOriginal)) {
+            actual.dato = nuevoDato;
+
+            // Recalcular prioridad y tolerancia si cambió el dato
+            actual.prioridad = actual.Cprioridad(nuevoDato.charAt(0));
+            actual.tolerancia = (int)(Math.random() * 146 + 5);
+
+            return true;
+        }
+        actual = actual.siguiente;
+    }
+
+    return false;
+}
      
      
      
