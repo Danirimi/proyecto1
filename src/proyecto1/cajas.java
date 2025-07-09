@@ -4,12 +4,14 @@
  */
 package proyecto1;
 
-/**
- *
- * @author danir
- */
 import java.util.ArrayList;
 import proyecto1.Nodo;
 public class cajas {
+    public int Tiemepo;
     
+    
+    public String Tiempos (){
+    
+        return;
+    }
 }
