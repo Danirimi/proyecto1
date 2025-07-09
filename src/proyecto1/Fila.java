@@ -52,7 +52,7 @@ public class Fila {
     
     
     //Metodo Agregar
-    public void agregar(Nodo nuevo){
+    public void agregar(Nodo nuevo){// metodo para agregar nodos a le fila
             
             
             if (inicio == null) {
@@ -73,7 +73,7 @@ public class Fila {
             }
     }
 }
-     public void simularYEliminarVencidos(int minutos) {
+     public void salidaCansancio(int minutos) {//metodo para simular cuando se cansa una persona de esperar
         // Elimina los nodos cuya tolerancia fue superada
         while (inicio != null && minutos > inicio.tolerancia) {
             System.out.println("Eliminado por tolerancia: " + inicio.dato);
@@ -96,5 +96,54 @@ public class Fila {
         }
     
 }
+     public void imprimirFila() {//imprime la fila
+    Nodo actual = inicio;
+    System.out.println("Estado actual de la fila:");
+    while (actual != null) {
+        System.out.println("- Ticket: " + actual.dato + ", Prioridad: " + actual.prioridad + ", Tolerancia: " + actual.tolerancia);
+        actual = actual.siguiente;
+    }
+}
+     
+     public boolean eliminarPorDato(String dato) {
+   
+    if (inicio == null) {
+        return false;
+    }
+
+    // Revisar si el nodo que queremos eliminar es el primero
+    if (inicio.dato.equals(dato)) {
+        inicio = inicio.siguiente;
+        if (inicio == null) {
+            fin = null;
+        }
+        return true;
+    }
+
+    // Recorrer la fila para encontrar el nodo a eliminar
+    Nodo actual = inicio;
+
+    while (actual.siguiente != null) {
+        // Si el siguiente nodo tiene el dato buscado
+        if (actual.siguiente.dato.equals(dato)) {
+            // Eliminar el nodo saltándolo
+            actual.siguiente = actual.siguiente.siguiente;
+
+            // Si se eliminó el último nodo, actualizar 'fin'
+            if (actual.siguiente == null) {
+                fin = actual;
+            }
+            return true;
+        }
+        // Moverse al siguiente nodo
+        actual = actual.siguiente;
+    }
+
+    // Si no se encontró el dato en la fila
+    return false;
+}
+     
+     
+     
      }
    
