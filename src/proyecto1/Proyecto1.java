@@ -6,14 +6,15 @@ public class Proyecto1 {
      
     public static void main(String[] args) {
         int a; // variable para manejar el menu principal
-        boolean d;
+        boolean d;// variable que funciona en el proceso de eliminar un dato
+        boolean comienzo = true;// variable que permite permanecer en el sistema
         int CantidadTicket =0;//variable para llevar control de cuantas personas pueden entrar
         Scanner Sc = new Scanner(System.in);// creamos nuevo scanner
         Tickets persona = new Tickets();// instancia de la clase Tickets
         Fila NFila = new Fila(null);//instancia de la clase fila
         
         System.out.println("BIENVENIDO AL BANCO: PROYECTO DE PROGRAMACION 1 CON ANDRES");
-        while (CantidadTicket <26){ 
+        while (comienzo){ 
             d = true;
             try {
                 Thread.sleep(1000);  
@@ -30,7 +31,8 @@ public class Proyecto1 {
             a = Sc.nextInt();
             switch(a){
                 case 1->{
-                  String agrega = persona.generarTicket(CantidadTicket);
+                   if(CantidadTicket <26){
+                           String agrega = persona.generarTicket(CantidadTicket);
                     if (agrega != null) {
                     Nodo nodo = new Nodo(agrega);
                         NFila.agregar(nodo);
@@ -38,6 +40,10 @@ public class Proyecto1 {
                     } else {
                     System.out.println("Intente de nuevo.");
                      }
+                   }else{
+                       System.out.println("el programa no admite mas de 25 datos");
+                   }
+              
                 }
                 case 2->{
                     System.out.println("Que dato desea eliminar de la fila?");
