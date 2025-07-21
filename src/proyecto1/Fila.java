@@ -1,29 +1,133 @@
 package proyecto1;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author danir
- */
-import java.util.ArrayList;
 public class Fila {
-    public Nodo inicio = null; // esta variable representa el inicio de la fila
-    private Nodo fin = null;// esta variable representa el final de la fila
-    private ArrayList<Nodo> fuera = new ArrayList<>();// lista donde se guardan los nodos impacientes que se salieron de la fila
-    
-    //metodo Constructor
+    private Nodo inicio;
+    private Nodo fin;
 
-    public Fila(Nodo inicio) {
-    this.inicio = inicio;
-    this.fin = inicio; // si solo hay un nodo
-    this.fuera = new ArrayList<>();
+    public Fila() {
+        this.inicio = null;
+        this.fin = null;
     }
 
-  //Get-Set
+    public void agregar(Nodo nuevoNodo) {
+        if (inicio == null) {
+            inicio = nuevoNodo;
+            fin = nuevoNodo;
+        } else {
+            // Insertar según prioridad (menor número = mayor prioridad)
+            Nodo actual = inicio;
+            Nodo anterior = null;
+            
+            while (actual != null && actual.prioridad <= nuevoNodo.prioridad) {
+                anterior = actual;
+                actual = actual.siguiente;
+            }
+            
+            if (anterior == null) { // Insertar al inicio
+                nuevoNodo.siguiente = inicio;
+                inicio = nuevoNodo;
+            } else { // Insertar en medio o al final
+                anterior.siguiente = nuevoNodo;
+                nuevoNodo.siguiente = actual;
+                
+                if (actual == null) {
+                    fin = nuevoNodo;
+                }
+            }
+        }
+    }
+
+    public Nodo obtenerSiguiente(boolean esPlataforma) {
+        if (inicio == null) return null;
+        
+        if (esPlataforma) {
+            // Buscar específicamente tickets de plataforma (E)
+            Nodo actual = inicio;
+            Nodo anterior = null;
+            
+            while (actual != null && actual.dato.charAt(0) != 'E') {
+                anterior = actual;
+                actual = actual.siguiente;
+            }
+            
+            if (actual != null) {
+                if (anterior == null) {
+                    inicio = actual.siguiente;
+                } else {
+                    anterior.siguiente = actual.siguiente;
+                }
+                
+                if (actual == fin) {
+                    fin = anterior;
+                }
+                
+                return actual;
+            }
+            return null;
+        } else {
+            // Para cajas normales, obtener el de mayor prioridad (inicio)
+            Nodo siguiente = inicio;
+            inicio = inicio.siguiente;
+            if (inicio == null) {
+                fin = null;
+            }
+            return siguiente;
+        }
+    }
+
+    public boolean eliminarPorDato(String dato) {
+        Nodo actual = inicio;
+        Nodo anterior = null;
+        
+        while (actual != null && !actual.dato.equals(dato)) {
+            anterior = actual;
+            actual = actual.siguiente;
+        }
+        
+        if (actual == null) return false;
+        
+        if (anterior == null) {
+            inicio = actual.siguiente;
+        } else {
+            anterior.siguiente = actual.siguiente;
+        }
+        
+        if (actual == fin) {
+            fin = anterior;
+        }
+        
+        return true;
+    }
+
+    public boolean editarPorDato(String original, String nuevo) {
+        Nodo actual = inicio;
+        
+        while (actual != null && !actual.dato.equals(original)) {
+            actual = actual.siguiente;
+        }
+        
+        if (actual == null) return false;
+        
+        actual.dato = nuevo;
+        actual.prioridad = calcularPrioridad(nuevo.charAt(0));
+        return true;
+    }
+
+    public void imprimirFila() {
+        Nodo actual = inicio;
+        if (actual == null) {
+            System.out.println("La fila está vacía.");
+            return;
+        }
+        
+        System.out.println("Fila actual:");
+        while (actual != null) {
+            System.out.println("- Ticket: " + actual.dato + 
+                             ", Prioridad: " + actual.prioridad + 
+                             ", Tolerancia: " + actual.tolerancia + " min");
+            actual = actual.siguiente;
+        }
+    }
 
     public Nodo getInicio() {
         return inicio;
@@ -40,128 +144,16 @@ public class Fila {
     public void setFin(Nodo fin) {
         this.fin = fin;
     }
-
-    public ArrayList<Nodo> getFuera() {
-        return fuera;
-    }
-
-    public void setFuera(ArrayList<Nodo> fuera) {
-        this.fuera = fuera;
-    }
-    
-    
-    
-    //Metodo Agregar
-    public void agregar(Nodo nuevo){// metodo para agregar nodos a le fila
-            
-            
-            if (inicio == null) {
-            inicio = fin = nuevo;
-        } else if (nuevo.prioridad < inicio.prioridad) {
-            nuevo.siguiente = inicio;
-            inicio = nuevo;
-        } else {
-            Nodo actual = inicio;
-            while (actual.siguiente != null && actual.siguiente.prioridad <= nuevo.prioridad) {
-                actual = actual.siguiente;
-            }
-            nuevo.siguiente = actual.siguiente;
-            actual.siguiente = nuevo;
-
-            if (nuevo.siguiente == null) {
-                fin = nuevo;
-            }
+    private int calcularPrioridad(char tipo) {
+    switch (tipo) {
+        case 'A': return 1;  // Adulto mayor
+        case 'B': return 2;  // Embarazada o con niño
+        case 'C': return 3;  // Discapacidad
+        case 'D': return 4;  // Varios asuntos
+        case 'E': return 5;  // Plataforma
+        case 'F': return 6;  // Mujer
+        case 'G': return 7;  // Hombre
+        default: return 8;   // Otra prioridad baja
     }
 }
-     public void salidaCansancio(int minutos) {//metodo para simular cuando se cansa una persona de esperar
-        // Elimina los nodos cuya tolerancia fue superada
-        while (inicio != null && minutos > inicio.tolerancia) {
-            System.out.println("Eliminado por tolerancia: " + inicio.dato);
-            fuera.add(inicio);
-            inicio = inicio.siguiente;
-        }
-         Nodo actual = inicio;
-        while (actual != null && actual.siguiente != null) {
-            if (minutos > actual.siguiente.tolerancia) {
-                System.out.println("Eliminado por tolerancia: " + actual.siguiente.dato);
-                fuera.add(actual.siguiente);
-                actual.siguiente = actual.siguiente.siguiente;
-            } else {
-                actual = actual.siguiente;
-            }
-        }
-
-        if (inicio == null) {
-            fin = null;
-        }
-    
 }
-     public void imprimirFila() {//imprime la fila
-    Nodo actual = inicio;
-    System.out.println("Estado actual de la fila:");
-    while (actual != null) {
-        System.out.println("- Ticket: " + actual.dato + ", Prioridad: " + actual.prioridad + ", Tolerancia: " + actual.tolerancia);
-        actual = actual.siguiente;
-    }
-}
-     
-     public boolean eliminarPorDato(String dato) {
-   
-    if (inicio == null) {
-        return false;
-    }
-
-    // Revisar si el nodo que queremos eliminar es el primero
-    if (inicio.dato.equals(dato)) {
-        inicio = inicio.siguiente;
-        if (inicio == null) {
-            fin = null;
-        }
-        return true;
-    }
-
-    // Recorrer la fila para encontrar el nodo a eliminar
-    Nodo actual = inicio;
-
-    while (actual.siguiente != null) {
-        // Si el siguiente nodo tiene el dato buscado
-        if (actual.siguiente.dato.equals(dato)) {
-            // Eliminar el nodo saltándolo
-            actual.siguiente = actual.siguiente.siguiente;
-
-            // Si se eliminó el último nodo, actualizar 'fin'
-            if (actual.siguiente == null) {
-                fin = actual;
-            }
-            return true;
-        }
-        // Moverse al siguiente nodo
-        actual = actual.siguiente;
-    }
-
-    // Si no se encontró el dato en la fila
-    return false;
-}
-     public boolean editarPorDato(String datoOriginal, String nuevoDato) {
-    Nodo actual = inicio;
-
-    while (actual != null) {
-        if (actual.dato.equals(datoOriginal)) {
-            actual.dato = nuevoDato;
-
-            // Recalcular prioridad y tolerancia si cambió el dato
-            actual.prioridad = actual.Cprioridad(nuevoDato.charAt(0));
-            actual.tolerancia = (int)(Math.random() * 146 + 5);
-
-            return true;
-        }
-        actual = actual.siguiente;
-    }
-
-    return false;
-}
-     
-     
-     
-     }
-   

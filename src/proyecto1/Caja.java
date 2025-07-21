@@ -1,56 +1,74 @@
 package proyecto1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Caja {
     private ArrayList<Nodo> atendidos = new ArrayList<>();
-    private int tiempo; // tiempo total de atención, puedes usarlo si quieres simular duración
+    private int tiempoTotalAtencion;
+    private boolean esPlataforma;
+    private boolean ocupada;
+    private Map<String, Integer> tiempoPorTicket = new HashMap<>();
 
-    // Constructor
-    public Caja() {
-        this.atendidos = new ArrayList<>();
-        this.tiempo = 0;
+    public Caja(boolean esPlataforma) {
+        this.esPlataforma = esPlataforma;
+        this.tiempoTotalAtencion = 0;
+        this.ocupada = false;
     }
 
-    // Método para atender cierta cantidad de nodos
-    public void atender(Fila fila, int cantidadAtender) {
-        for (int i = 0; i < cantidadAtender; i++) {
-            Nodo nodoAtendido = fila.getInicio();
-
-            if (nodoAtendido == null) {
-                System.out.println("La fila está vacía, no hay más por atender.");
-                break;
-            }
-
-            // Agregar a la lista de atendidos
-            atendidos.add(nodoAtendido);
-            System.out.println("Atendiendo a: " + nodoAtendido.dato);
-
-            // Eliminar de la fila
-            fila.setInicio(nodoAtendido.siguiente);
-
-            // Si ya no hay más, actualizar el fin
-            if (fila.getInicio() == null) {
-                fila.setFin(null);
-            }
-
-            // Simular tiempo de atención por persona (opcional)
-            tiempo += 3; // por ejemplo, 3 minutos por persona
+    public void atender(Fila fila, Nodo cliente) {
+        ocupada = true;
+        int tiempoAtencion = (int)(Math.random() * 10) + 5; // Entre 5-15 minutos por cliente
+        
+        try {
+            // Simular tiempo de atención
+            System.out.println("Caja " + (esPlataforma ? "PLATAFORMA" : "NORMAL") + 
+                             " atendiendo a: " + cliente.dato + 
+                             " (Tiempo estimado: " + tiempoAtencion + " min)");
+            Thread.sleep(tiempoAtencion * 100); // Acelerado para demostración (100ms = 1min)
+            
+            // Registrar atención
+            atendidos.add(cliente);
+            tiempoPorTicket.put(cliente.dato, tiempoAtencion);
+            tiempoTotalAtencion += tiempoAtencion;
+            
+            System.out.println("Atención completada para: " + cliente.dato);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            ocupada = false;
         }
     }
 
-    public void imprimirAtendidos() {
-        System.out.println("Clientes atendidos:");
+    public void mostrarHistorial() {
+        if (atendidos.isEmpty()) {
+            System.out.println("Esta caja no ha atendido a nadie aún.");
+            return;
+        }
+        
+        System.out.println("Clientes atendidos en esta caja:");
         for (Nodo n : atendidos) {
-            System.out.println("- Ticket: " + n.dato + ", Prioridad: " + n.prioridad + ", Tolerancia: " + n.tolerancia);
+            System.out.println("- Ticket: " + n.dato + 
+                             ", Tiempo atención: " + tiempoPorTicket.get(n.dato) + " min" +
+                             ", Prioridad: " + n.prioridad);
         }
+        System.out.println("Tiempo total de atención: " + tiempoTotalAtencion + " min");
+    }
+
+    public boolean estaOcupada() {
+        return ocupada;
+    }
+
+    public boolean esPlataforma() {
+        return esPlataforma;
     }
 
     public ArrayList<Nodo> getAtendidos() {
         return atendidos;
     }
 
-    public int getTiempo() {
-        return tiempo;
+    public int getTiempoTotalAtencion() {
+        return tiempoTotalAtencion;
     }
 }
