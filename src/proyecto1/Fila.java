@@ -37,43 +37,42 @@ public class Fila {
         }
     }
 
-    public Nodo obtenerSiguiente(boolean esPlataforma) {
-        if (inicio == null) return null;
-        
-        if (esPlataforma) {
-            // Buscar específicamente tickets de plataforma (E)
-            Nodo actual = inicio;
-            Nodo anterior = null;
-            
-            while (actual != null && actual.dato.charAt(0) != 'E') {
-                anterior = actual;
-                actual = actual.siguiente;
-            }
-            
-            if (actual != null) {
-                if (anterior == null) {
-                    inicio = actual.siguiente;
-                } else {
-                    anterior.siguiente = actual.siguiente;
-                }
-                
-                if (actual == fin) {
-                    fin = anterior;
-                }
-                
-                return actual;
-            }
-            return null;
-        } else {
-            // Para cajas normales, obtener el de mayor prioridad (inicio)
-            Nodo siguiente = inicio;
-            inicio = inicio.siguiente;
-            if (inicio == null) {
-                fin = null;
-            }
-            return siguiente;
+public Nodo obtenerSiguiente(boolean esPlataforma) {
+    if (inicio == null) return null;
+
+    Nodo actual = inicio;
+    Nodo anterior = null;
+
+    if (esPlataforma) {
+        // Buscar específicamente tickets de plataforma (E, F, G)
+        while (actual != null && actual.dato.charAt(0) != 'E' && actual.dato.charAt(0) != 'F' && actual.dato.charAt(0) != 'G') {
+            anterior = actual;
+            actual = actual.siguiente;
+        }
+    } else {
+        // Buscar específicamente tickets normales (A, B, C, D)
+        while (actual != null && (actual.dato.charAt(0) == 'E' || actual.dato.charAt(0) == 'F' || actual.dato.charAt(0) == 'G')) {
+            anterior = actual;
+            actual = actual.siguiente;
         }
     }
+
+    if (actual != null) {
+        if (anterior == null) {
+            inicio = actual.siguiente;
+        } else {
+            anterior.siguiente = actual.siguiente;
+        }
+
+        if (actual == fin) {
+            fin = anterior;
+        }
+
+        return actual;
+    }
+
+    return null; // No hay cliente válido para este tipo de caja
+}
 
     public boolean eliminarPorDato(String dato) {
         Nodo actual = inicio;
@@ -116,7 +115,7 @@ public class Fila {
     public void imprimirFila() {
         Nodo actual = inicio;
         if (actual == null) {
-            System.out.println("La fila está vacía.");
+            System.out.println("La fila está vacia.");
             return;
         }
         
@@ -155,5 +154,45 @@ public class Fila {
         case 'G': return 7;  // Hombre
         default: return 8;   // Otra prioridad baja
     }
+}
+    
+    
+    public void SimularTiempo() {
+    Nodo actual = inicio;
+    Nodo anterior = null;
+
+    while (actual != null) {
+        actual.tiempoDeEspera++;  // Simula que pasa 1 minuto
+
+        if (actual.tiempoDeEspera >= actual.tolerancia) {
+            System.out.println("Cliente " + actual.dato + " se fue sin ser atendido (espero " + actual.tiempoDeEspera + " min, tolerancia " + actual.tolerancia + " min)");
+
+            // Eliminar el nodo que se canso
+                if (anterior == null) {
+                inicio = actual.siguiente;
+            } else {
+                anterior.siguiente = actual.siguiente;
+            }
+
+            if (actual == fin) {
+                fin = anterior;
+            }
+
+            // Avanzar al siguiente
+            actual = (anterior == null) ? inicio : anterior.siguiente;
+        } else {
+            anterior = actual;
+            actual = actual.siguiente;
+        }
+    }
+}
+public int contarElementos() {
+    int contador = 0;
+    Nodo actual = inicio;
+    while (actual != null) {
+        contador++;
+        actual = actual.siguiente;
+    }
+    return contador;
 }
 }

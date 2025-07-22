@@ -20,20 +20,20 @@ public class Caja {
     public void atender(Fila fila, Nodo cliente) {
         ocupada = true;
         int tiempoAtencion = (int)(Math.random() * 10) + 5; // Entre 5-15 minutos por cliente
-        
+
         try {
             // Simular tiempo de atención
             System.out.println("Caja " + (esPlataforma ? "PLATAFORMA" : "NORMAL") + 
                              " atendiendo a: " + cliente.dato + 
                              " (Tiempo estimado: " + tiempoAtencion + " min)");
             Thread.sleep(tiempoAtencion * 100); // Acelerado para demostración (100ms = 1min)
-            
+            cliente.setTiempoDeEspera(cliente.tiempoDeEspera); // Registrar el tiempo que esperó en la fila
             // Registrar atención
             atendidos.add(cliente);
             tiempoPorTicket.put(cliente.dato, tiempoAtencion);
             tiempoTotalAtencion += tiempoAtencion;
-            
-            System.out.println("Atención completada para: " + cliente.dato);
+
+            System.out.println("Atencion completada para: " + cliente.dato);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -43,10 +43,10 @@ public class Caja {
 
     public void mostrarHistorial() {
         if (atendidos.isEmpty()) {
-            System.out.println("Esta caja no ha atendido a nadie aún.");
+            System.out.println("Esta caja no ha atendido a nadie aun.");
             return;
         }
-        
+
         System.out.println("Clientes atendidos en esta caja:");
         for (Nodo n : atendidos) {
             System.out.println("- Ticket: " + n.dato + 
@@ -70,5 +70,29 @@ public class Caja {
 
     public int getTiempoTotalAtencion() {
         return tiempoTotalAtencion;
+    }
+
+    public int getCantidadAtendidos() {
+        return atendidos.size();
+    }
+
+    public double getPromedioEspera() {
+        if (atendidos.isEmpty()) return 0.0;
+
+        int totalEspera = 0;
+        for (Nodo cliente : atendidos) {
+            totalEspera += cliente.getTiempoDeEspera(); // Asegúrate que esté actualizado
+        }
+
+        return totalEspera / (double) atendidos.size();
+    }
+
+    public Map<Character, Integer> getCategoriasAtendidas() {
+        Map<Character, Integer> conteo = new HashMap<>();
+        for (Nodo cliente : atendidos) {
+            char categoria = cliente.getDato().charAt(0);
+            conteo.put(categoria, conteo.getOrDefault(categoria, 0) + 1);
+        }
+        return conteo;
     }
 }

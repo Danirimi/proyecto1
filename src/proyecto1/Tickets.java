@@ -8,10 +8,10 @@ public class Tickets {
 
     public String generarTicket() {
         System.out.println("\nSeleccione el tipo de cliente:");
-        System.out.println("A = Adulto Mayor (Prioridad Máxima)");
+        System.out.println("A = Adulto Mayor (Prioridad Maxima)");
         System.out.println("B = Mujer Embarazada (Prioridad Alta)");
         System.out.println("C = Persona con Discapacidad (Prioridad Alta)");
-        System.out.println("D = 2 o más Asuntos (Prioridad Media)");
+        System.out.println("D = 2 o mas Asuntos (Prioridad Media)");
         System.out.println("E = Plataforma de Servicios (Prioridad Especial)");
         System.out.println("F = Hombre (Prioridad General)");
         System.out.println("G = Mujer (Prioridad General)");
@@ -24,8 +24,11 @@ public class Tickets {
             System.out.println("Ticket generado: " + ticket);
             return ticket;
         } else {
-            System.out.println("Opción incorrecta. Por favor ingrese una letra de A a G.");
+            System.out.println("Opcion incorrecta. Por favor ingrese una letra de A a G.");
             return null;
         }
     }
+    public int getContador() {
+    return contadorTickets;
+}
 }

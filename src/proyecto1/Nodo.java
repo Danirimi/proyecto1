@@ -1,10 +1,14 @@
 package proyecto1;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Nodo {
     public String dato;
     public Nodo siguiente;
     public int prioridad;
     public int tolerancia;
+    public int tiempoDeEspera = 0;
 
     public Nodo(String dato) {
         this.dato = dato;
@@ -24,4 +28,16 @@ public class Nodo {
             default -> 6;
         };
     }
+    public int getTiempoDeEspera() {
+    return tiempoDeEspera;
+}
+
+public void setTiempoDeEspera(int minutos) {
+    this.tiempoDeEspera = minutos;
+}
+
+public String getDato() {
+    return dato;
+}
+
 }
